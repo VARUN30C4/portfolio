@@ -41,3 +41,7 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
 });
+app.get("/hello", (req, res) => {
+  res.send("Hello from Railway!");
+});
+
