@@ -1,47 +1,37 @@
-const express = require("express");
-const path = require("path");
-const cors = require("cors");
+// backendd.js
+import express from "express";
+import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Middleware
+// ✅ Middleware
 app.use(cors());
-app.use(express.json()); 
-app.use(express.static(path.join(__dirname, "public"))); 
+app.use(express.json());
 
-// Routes
-
-// Hello route
-app.get("/hello", (req, res) => {
-  res.send("Hello from Railway!");
+// ✅ Sample test route
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working fine 🚀" });
 });
 
-// Projects API
-app.get("/projects", (req, res) => {
+// ✅ Example: Projects API (you can connect DB later)
+app.get("/api/projects", (req, res) => {
   res.json([
-    { name: "Portfolio Website", description: "My personal website" },
-    { name: "Data Analysis Project", description: "Analyzing datasets with Python" }
+    { id: 1, title: "Portfolio Website", tech: "React, Node.js" },
+    { id: 2, title: "AI Chatbot", tech: "Python, Flask" },
   ]);
 });
 
-// Contact form API
+// ✅ Example: Contact form API (for Netlify frontend to send data)
 app.post("/api/contact", (req, res) => {
-  const { email, message } = req.body;
-  console.log(`📩 New contact form submission:\nEmail: ${email}\nMessage: ${message}`);
-  res.json({ success: true, message: "Thank you for contacting me!" });
+  const { name, email, message } = req.body;
+  console.log("📩 New contact form:", { name, email, message });
+
+  // (Later you can send email via Nodemailer)
+  res.json({ success: true, msg: "Message received ✅" });
 });
 
-// Fallback route: serve frontend
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// ✅ Start server
+const port = process.env.PORT || 10000;
+app.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`);
 });
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
-});
-app.get("/hello", (req, res) => {
-  res.send("Hello from Railway!");
-});
-
