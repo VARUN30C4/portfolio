@@ -10,6 +10,21 @@ app.use(cors());
 app.use(express.json()); 
 app.use(express.static(path.join(__dirname, "public"))); 
 
+// Routes
+
+// Hello route
+app.get("/hello", (req, res) => {
+  res.send("Hello from Railway!");
+});
+
+// Projects API
+app.get("/projects", (req, res) => {
+  res.json([
+    { name: "Portfolio Website", description: "My personal website" },
+    { name: "Data Analysis Project", description: "Analyzing datasets with Python" }
+  ]);
+});
+
 // Contact form API
 app.post("/api/contact", (req, res) => {
   const { email, message } = req.body;
@@ -17,7 +32,7 @@ app.post("/api/contact", (req, res) => {
   res.json({ success: true, message: "Thank you for contacting me!" });
 });
 
-// Fallback route (Express v4 supports "*")
+// Fallback route: serve frontend
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
