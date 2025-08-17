@@ -1,19 +1,23 @@
-// backendd.js
 import express from "express";
+import path from "path";
 import cors from "cors";
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// ✅ Middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ Sample test route
+// Routes
+
+// Sample test route
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working fine 🚀" });
 });
 
-// ✅ Example: Projects API (you can connect DB later)
+// Projects API
 app.get("/api/projects", (req, res) => {
   res.json([
     { id: 1, title: "Portfolio Website", tech: "React, Node.js" },
@@ -21,17 +25,19 @@ app.get("/api/projects", (req, res) => {
   ]);
 });
 
-// ✅ Example: Contact form API (for Netlify frontend to send data)
+// Contact form API
 app.post("/api/contact", (req, res) => {
   const { name, email, message } = req.body;
   console.log("📩 New contact form:", { name, email, message });
-
-  // (Later you can send email via Nodemailer)
-  res.json({ success: true, msg: "Message received ✅" });
+  res.json({ success: true, message: "Thank you for contacting me!" });
 });
 
-// ✅ Start server
-const port = process.env.PORT || 10000;
-app.listen(port, () => {
-  console.log(`✅ Server running on port ${port}`);
+// Fallback route: serve frontend
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
 });
